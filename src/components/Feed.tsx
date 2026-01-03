@@ -24,13 +24,25 @@ export default function Feed() {
     fetchFeed();
   }, []);
 
+  if (!feedProfiles) return null;
+
+  if (feedProfiles.length === 0) {
+    return (
+      <div className="flex justify-center items-center py-20">
+        <h1 className="text-2xl font-bold">No Profiles Found</h1>
+      </div>
+    );
+  }
+
   return (
     <div className="flex justify-center items-center py-20">
-      {feedProfiles &&
-        feedProfiles.length &&
-        feedProfiles.map((feedProfile: FeedProfile) => (
-          <FeedProfileCard profile={feedProfile} />
-        ))}
+      {feedProfiles && feedProfiles.length && (
+        <FeedProfileCard
+          profile={feedProfiles[0]}
+          onActionSuccess={fetchFeed}
+          key={feedProfiles[0]._id}
+        />
+      )}
     </div>
   );
 }
