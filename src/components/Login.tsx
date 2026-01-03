@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { addUserProfile } from "../store/userSlice";
-import { BASE_URL } from "../constants";
+import { BASE_URL } from "../utils/constants";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -12,9 +12,11 @@ const Login = () => {
   const [emailId, setEmailId] = useState("elon@gmail.com");
   const [password, setPassword] = useState("Skysins1@");
 
+  const [error, setError] = useState("");
+
   const handleLogin = async () => {
     try {
-      const res = await axios.post(
+      const response = await axios.post(
         `${BASE_URL}/login`,
         {
           emailId,
@@ -22,12 +24,10 @@ const Login = () => {
         },
         { withCredentials: true }
       );
-      dispatch(addUserProfile(res.data));
+      dispatch(addUserProfile(response.data));
       navigate("/");
-
-      console.log("Login successful", res.data);
-    } catch (err) {
-      console.error("Login failed", err);
+    } catch (error) {
+      setError("Invalid Email Id or Password");
     }
   };
 
@@ -106,6 +106,7 @@ const Login = () => {
               At least one uppercase letter
             </p>
           </div>
+          <p className="text-red-500">{error}</p>
           <div className="card-actions justify-center">
             <button className="btn btn-primary" onClick={handleLogin}>
               Login

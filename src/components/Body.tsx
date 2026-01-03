@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 import { addUserProfile } from "../store/userSlice";
-import { BASE_URL } from "../constants";
+import { BASE_URL } from "../utils/constants";
 
 const Body = () => {
   const dispatch = useDispatch();
