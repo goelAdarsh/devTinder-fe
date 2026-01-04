@@ -6,7 +6,7 @@ import { BASE_URL } from "../utils/constants";
 
 const Requests = () => {
   const dispatch = useDispatch();
-  const requests = useSelector((store) => store.requests);
+  const requests = useSelector((store) => (store as any).requests);
 
   const [requestActionStatus, setRequestActionStatus] = useState<string | null>(
     null
@@ -21,7 +21,7 @@ const Requests = () => {
     } catch (error) {}
   };
 
-  const handleRequestAction = async (requestId, status) => {
+  const handleRequestAction = async (requestId: string, status: string) => {
     try {
       await axios.patch(
         `${BASE_URL}/requests/${requestId}`,
@@ -70,7 +70,7 @@ const Requests = () => {
       <div className="flex flex-col gap-10 m-10">
         <h1 className="text-2xl font-bold">Requests</h1>
         <ul className="list bg-base-800 rounded-box shadow-md">
-          {requests.map((request) => (
+          {requests.map((request: any) => (
             <li className="list-row" key={request._id}>
               <div>
                 <img

@@ -2,10 +2,10 @@ import axios from "axios";
 import { useState } from "react";
 import { BASE_URL } from "../utils/constants";
 
-const FeedProfileCard = ({ profile, onActionSuccess }) => {
+const FeedProfileCard = ({ profile, onActionSuccess }: any) => {
   const [profileActionStatus, setProfileActionStatus] = useState(null);
 
-  const handleProfileAction = async (receiverId, status) => {
+  const handleProfileAction = async (receiverId: string, status: string) => {
     try {
       await axios.post(
         `${BASE_URL}/requests`,
@@ -17,7 +17,7 @@ const FeedProfileCard = ({ profile, onActionSuccess }) => {
           withCredentials: true,
         }
       );
-      setProfileActionStatus(status.toLowerCase());
+      setProfileActionStatus((status as any).toLowerCase());
     } catch (error) {
     } finally {
       setTimeout(() => {

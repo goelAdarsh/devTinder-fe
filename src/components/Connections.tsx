@@ -6,7 +6,7 @@ import { BASE_URL } from "../utils/constants";
 
 const Connections = () => {
   const dispatch = useDispatch();
-  const connections = useSelector((store) => store.connections);
+  const connections = useSelector((store) => (store as any).connections);
 
   const fetchConnections = async () => {
     try {
@@ -34,7 +34,7 @@ const Connections = () => {
     <div className="flex flex-col gap-10 m-10">
       <h1 className="text-2xl font-bold">Connections</h1>
       <ul className="list bg-base-800 rounded-box shadow-md">
-        {connections.map((connection) => (
+        {connections.map((connection: any) => (
           <li className="list-row" key={connection._id}>
             <div>
               <img className="size-10 rounded-box" src={connection.photoUrl} />

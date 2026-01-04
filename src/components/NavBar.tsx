@@ -7,7 +7,7 @@ import { BASE_URL } from "../utils/constants";
 const NavBar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((store) => store.user);
+  const user = useSelector((store) => (store as any).user);
 
   const handleLogout = async () => {
     try {

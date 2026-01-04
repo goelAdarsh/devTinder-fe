@@ -4,11 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import FeedProfileCard from "./FeedProfileCard";
 import { addFeed } from "../store/feedSlice";
 import { BASE_URL } from "../utils/constants";
-import type { FeedProfile } from "../types/feedProfile";
 
 export default function Feed() {
   const dispatch = useDispatch();
-  const feedProfiles = useSelector((store) => store.feed);
+  const feedProfiles = useSelector((store) => (store as any).feed);
   console.log(feedProfiles);
 
   const fetchFeed = async () => {

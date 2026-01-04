@@ -5,7 +5,7 @@ import { BASE_URL } from "../utils/constants";
 import { useDispatch } from "react-redux";
 import { addUserProfile } from "../store/userSlice";
 
-const EditProfile = ({ profile }) => {
+const EditProfile = ({ profile }: any) => {
   const dispatch = useDispatch();
 
   const [userProfileData, setUserProfileData] = useState({
@@ -101,7 +101,10 @@ const EditProfile = ({ profile }) => {
           </div>
         </div>
       </div>
-      <FeedProfileCard profile={{ ...profile, ...userProfileData }} />
+      <FeedProfileCard
+        profile={{ ...profile, ...userProfileData }}
+        onActionSuccess={() => {}}
+      />
     </div>
   );
 };
