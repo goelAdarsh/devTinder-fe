@@ -9,9 +9,13 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [emailId, setEmailId] = useState("elon@gmail.com");
-  const [password, setPassword] = useState("Skysins1@");
-
+  const [formType, setFormType] = useState<"signup" | "login">("signup");
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    emailId: "",
+    password: "",
+  });
   const [error, setError] = useState("");
 
   const handleLogin = async () => {
@@ -19,8 +23,8 @@ const Login = () => {
       const response = await axios.post(
         `${BASE_URL}/login`,
         {
-          emailId,
-          password,
+          emailId: formData.emailId,
+          password: formData.password,
         },
         { withCredentials: true }
       );
@@ -31,12 +35,85 @@ const Login = () => {
     }
   };
 
+  const handleSignup = async () => {
+    try {
+      const response = await axios.post(`${BASE_URL}/signup`, formData, {
+        withCredentials: true,
+      });
+      setFormType("login");
+      dispatch(addUserProfile(response.data));
+      navigate("/profile");
+    } catch (error) {}
+  };
+
   return (
     <div className="flex justify-center my-10">
       <div className="card bg-base-300 w-96 shadow-sm">
         <div className="card-body flex flex-col gap-5">
-          <h2 className="card-title justify-center">Login</h2>
+          <h2 className="card-title justify-center">
+            {formType === "login" ? "Login" : "Sign Up"}
+          </h2>
           <div className="flex flex-col gap-4">
+            {formType === "signup" && (
+              <>
+                <label className="input validator">
+                  <svg
+                    className="h-[1em] opacity-50"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                  >
+                    <g
+                      strokeLinejoin="round"
+                      strokeLinecap="round"
+                      strokeWidth="2.5"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </g>
+                  </svg>
+                  <input
+                    type="text"
+                    required
+                    placeholder="First Name"
+                    pattern="[A-Za-z][A-Za-z0-9\-]*"
+                    value={formData.firstName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, firstName: e.target.value })
+                    }
+                  />
+                </label>
+                <label className="input validator">
+                  <svg
+                    className="h-[1em] opacity-50"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                  >
+                    <g
+                      strokeLinejoin="round"
+                      strokeLinecap="round"
+                      strokeWidth="2.5"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </g>
+                  </svg>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Last Name"
+                    pattern="[A-Za-z][A-Za-z0-9\-]*"
+                    value={formData.lastName}
+                    onChange={(e) =>
+                      setFormData({ ...formData, lastName: e.target.value })
+                    }
+                  />
+                </label>
+              </>
+            )}
             <label className="input validator">
               <svg
                 className="h-[1em] opacity-50"
@@ -58,13 +135,12 @@ const Login = () => {
                 type="email"
                 placeholder="mail@site.com"
                 required
-                value={emailId}
-                onChange={(e) => setEmailId(e.target.value)}
+                value={formData.emailId}
+                onChange={(e) =>
+                  setFormData({ ...formData, emailId: e.target.value })
+                }
               />
             </label>
-            <div className="validator-hint hidden">
-              Enter valid email address
-            </div>
             <label className="input validator">
               <svg
                 className="h-[1em] opacity-50"
@@ -94,24 +170,32 @@ const Login = () => {
                 minLength={8}
                 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                 title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={formData.password}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
               />
             </label>
-            <p className="validator-hint hidden">
-              Must be more than 8 characters, including
-              <br />
-              At least one number <br />
-              At least one lowercase letter <br />
-              At least one uppercase letter
-            </p>
           </div>
           <p className="text-red-500">{error}</p>
           <div className="card-actions justify-center">
-            <button className="btn btn-primary" onClick={handleLogin}>
-              Login
+            <button
+              className="btn btn-primary"
+              onClick={formType === "login" ? handleLogin : handleSignup}
+            >
+              {formType === "login" ? "Login" : "Sign Up"}
             </button>
           </div>
+          <p
+            className="text-center cursor-pointer"
+            onClick={() =>
+              setFormType(formType === "login" ? "signup" : "login")
+            }
+          >
+            {formType === "login"
+              ? "Don't have an account? Sign Up"
+              : "Already have an account? Login"}
+          </p>
         </div>
       </div>
     </div>
